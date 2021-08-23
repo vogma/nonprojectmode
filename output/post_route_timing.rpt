@@ -1,0 +1,22 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
+| Date         : Mon Aug 23 16:47:45 2021
+| Host         : marco running 64-bit Ubuntu 21.04
+| Command      : report_timing -sort_by group -max_paths 100 -path_type summary -file ./output/post_route_timing.rpt
+| Design       : rop
+| Device       : 7a100t-csg324
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+---------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Startpoint                     Endpoint                       Slack(ns)     
+----------------------------------------------------------------------------
+btn[1]                         led[0]                         inf           
+btn[1]                         led[1]                         inf           
+btn[1]                         led[3]                         inf           
+btn[1]                         led[2]                         inf           
+
+
+
