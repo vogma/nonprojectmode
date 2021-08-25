@@ -1,10 +1,11 @@
 set outputDir ./output             
 file mkdir $outputDir
 
+read_vhdl -library work [ glob ./src/uart/*.vhd ]  
 read_vhdl -library work [ glob ./src/*.vhd ]  
 read_xdc ./constr/Arty-A7-100-Master.xdc       
 
-synth_design -top rop -part XC7A100TCSG324-1 -flatten rebuilt    
+synth_design -top top -part XC7A100TCSG324-1 -flatten rebuilt    
 write_checkpoint -force $outputDir/post_synth
 #report_timing_summary -file $outputDir/post_synth_timing_summary.rpt
 #report_power -file $outputDir/post_synth_power.rpt
@@ -24,7 +25,7 @@ write_checkpoint -force $outputDir/post_route
 #report_utilization -file $outputDir/post_route_util.rpt
 #report_power -file $outputDir/post_route_power.rpt
 #report_drc -file $outputDir/post_imp_drc.rpt
-write_verilog -force $outputDir/rop_impl_netlist.v
-write_xdc -no_fixed_only -force $outputDir/rop_impl.xdc
+write_verilog -force $outputDir/top_impl_netlist.v
+write_xdc -no_fixed_only -force $outputDir/top_impl.xdc
 
-write_bitstream -force $outputDir/rop.bit
+write_bitstream -force $outputDir/top.bit

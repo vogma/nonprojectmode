@@ -12,7 +12,7 @@ current_hw_device $Device
 refresh_hw_device -update_hw_probes false [lindex $Device 0]
 set_property PROBES.FILE {} $Device
 set_property FULL_PROBES.FILE {} $Device
-set_property PROGRAM.FILE {./output/rop.bit} $Device
+set_property PROGRAM.FILE {./output/top.bit} $Device
 
 program_hw_devices $Device
 refresh_hw_device [lindex $Device 0]
