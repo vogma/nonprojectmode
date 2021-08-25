@@ -14,22 +14,18 @@ END top;
 
 ARCHITECTURE Behavioral OF top IS
 
-constant test : STD_LOGIC_VECTOR(7 downto 0) := "01111010";
-signal edge : STD_LOGIC_VECTOR(3 downto 0);
+    SIGNAL edge : STD_LOGIC_VECTOR(3 DOWNTO 0);
 BEGIN
 
- 
-    uart_transmit : ENTITY work.uart_tx_controller(arch)
+    uart_demo : ENTITY work.uart_transmitter(Behavioral)
         PORT MAP(
             clk => clk,
-            tx_start => edge(1),
-            tx_byte => test,
-            led => led,
-            tx_serial => uart_rxd_out
+            start => edge(0),
+            uart_tx => uart_rxd_out
         );
 
-        debouncer : entity work.debounce 
-        port map(
+    debouncer : ENTITY work.debounce
+        PORT MAP(
             clk => clk,
             btn => btn,
             edge => edge

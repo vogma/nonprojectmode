@@ -33,7 +33,6 @@ ENTITY uart_transmitter IS
 	PORT (
 		clk : IN STD_LOGIC;
 		start : IN STD_LOGIC;
-		byte_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
 		uart_tx : OUT STD_LOGIC);
 END uart_transmitter;
 
@@ -85,9 +84,10 @@ BEGIN
 		END IF;
 	END PROCESS;
 
-	next_state_logic : PROCESS (state_reg, tx_done, start, char_index_reg, byte_in)
+	next_state_logic : PROCESS (state_reg, tx_done, start, char_index_reg)
 	BEGIN
 		state_next <= state_reg;
+		char_index_next <= char_index_reg;
 
 		tx_start <= '0';
 		tx_byte <= (OTHERS => '0');
@@ -100,10 +100,15 @@ BEGIN
 
 			WHEN transmit_byte =>
 				tx_start <= '1'; --signal to start transmission 
-				tx_byte <= byte_in;
+				tx_byte <= BTN_STR(char_index_reg);
 
 				IF (tx_done = '1') THEN --Transmission of byte finished
-					state_next <= finished;
+					char_index_next <= char_index_reg + 1;
+					IF (char_index_reg < BTN_STR'length) THEN
+						state_next <= transmit_byte;
+					ELSE
+						state_next <= finished;
+					END IF;
 				END IF;
 
 			WHEN finished =>

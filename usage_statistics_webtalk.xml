@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<webTalkData  fileName='usage_statistics_webtalk.xml'  majorVersion='1' minorVersion='0' timeStamp='Wed Aug 25 11:56:04 2021'>
+<webTalkData  fileName='usage_statistics_webtalk.xml'  majorVersion='1' minorVersion='0' timeStamp='Wed Aug 25 13:45:09 2021'>
 <section name="__ROOT__" level="0" order="1" description="">
  <section name="software_version_and_target_device" level="1" order="1" description="">
   <keyValuePair key="beta" value="FALSE" description="" />
   <keyValuePair key="build_version" value="3064766" description="" />
-  <keyValuePair key="date_generated" value="Wed Aug 25 11:56:04 2021" description="" />
+  <keyValuePair key="date_generated" value="Wed Aug 25 13:45:09 2021" description="" />
   <keyValuePair key="os_platform" value="LIN64" description="" />
   <keyValuePair key="product_version" value="Vivado v2020.2 (64-bit)" description="" />
-  <keyValuePair key="project_id" value="baf31ab2da28498e9eb070d85df721cd" description="" />
-  <keyValuePair key="project_iteration" value="3" description="" />
+  <keyValuePair key="project_id" value="6c57142399244a30b6470effe3a0e9b2" description="" />
+  <keyValuePair key="project_iteration" value="2" description="" />
   <keyValuePair key="random_id" value="88350c27cbdb5760b5f8e538a1cd8f15" description="" />
   <keyValuePair key="registration_id" value="88350c27cbdb5760b5f8e538a1cd8f15" description="" />
   <keyValuePair key="route_design" value="TRUE" description="" />
@@ -63,8 +63,8 @@
    <keyValuePair key="bram_ports_total" value="0" description="" />
    <keyValuePair key="flow_state" value="post_synth" description="" />
    <keyValuePair key="slice_registers_augmented" value="0" description="" />
-   <keyValuePair key="slice_registers_newly_gated" value="7" description="" />
-   <keyValuePair key="slice_registers_total" value="25" description="" />
+   <keyValuePair key="slice_registers_newly_gated" value="8" description="" />
+   <keyValuePair key="slice_registers_total" value="38" description="" />
    <keyValuePair key="srls_augmented" value="0" description="" />
    <keyValuePair key="srls_newly_gated" value="0" description="" />
    <keyValuePair key="srls_total" value="0" description="" />
@@ -111,40 +111,42 @@
    <keyValuePair key="-verilog_define" value="default::[not_specified]" description="" />
   </section>
   <section name="usage" level="2" order="2" description="">
-   <keyValuePair key="elapsed" value="00:00:09s" description="" />
+   <keyValuePair key="elapsed" value="00:00:10s" description="" />
    <keyValuePair key="hls_ip" value="0" description="" />
-   <keyValuePair key="memory_gain" value="405.273MB" description="" />
-   <keyValuePair key="memory_peak" value="4688.816MB" description="" />
+   <keyValuePair key="memory_gain" value="422.305MB" description="" />
+   <keyValuePair key="memory_peak" value="4691.934MB" description="" />
   </section>
  </section>
  <section name="unisim_transformation" level="1" order="6" description="">
   <section name="post_unisim_transformation" level="2" order="1" description="">
    <keyValuePair key="bufg" value="1" description="" />
    <keyValuePair key="carry4" value="4" description="" />
-   <keyValuePair key="fdre" value="25" description="" />
-   <keyValuePair key="gnd" value="3" description="" />
+   <keyValuePair key="fdre" value="38" description="" />
+   <keyValuePair key="gnd" value="4" description="" />
    <keyValuePair key="ibuf" value="2" description="" />
-   <keyValuePair key="lut2" value="2" description="" />
+   <keyValuePair key="lut2" value="1" description="" />
    <keyValuePair key="lut3" value="2" description="" />
-   <keyValuePair key="lut4" value="4" description="" />
-   <keyValuePair key="lut5" value="4" description="" />
+   <keyValuePair key="lut4" value="7" description="" />
+   <keyValuePair key="lut5" value="17" description="" />
    <keyValuePair key="lut6" value="34" description="" />
-   <keyValuePair key="obuf" value="5" description="" />
-   <keyValuePair key="vcc" value="2" description="" />
+   <keyValuePair key="obuf" value="1" description="" />
+   <keyValuePair key="obuft" value="4" description="" />
+   <keyValuePair key="vcc" value="4" description="" />
   </section>
   <section name="pre_unisim_transformation" level="2" order="2" description="">
    <keyValuePair key="bufg" value="1" description="" />
    <keyValuePair key="carry4" value="4" description="" />
-   <keyValuePair key="fdre" value="25" description="" />
-   <keyValuePair key="gnd" value="3" description="" />
+   <keyValuePair key="fdre" value="38" description="" />
+   <keyValuePair key="gnd" value="4" description="" />
    <keyValuePair key="ibuf" value="2" description="" />
-   <keyValuePair key="lut2" value="2" description="" />
+   <keyValuePair key="lut2" value="1" description="" />
    <keyValuePair key="lut3" value="2" description="" />
-   <keyValuePair key="lut4" value="4" description="" />
-   <keyValuePair key="lut5" value="4" description="" />
+   <keyValuePair key="lut4" value="7" description="" />
+   <keyValuePair key="lut5" value="17" description="" />
    <keyValuePair key="lut6" value="34" description="" />
-   <keyValuePair key="obuf" value="5" description="" />
-   <keyValuePair key="vcc" value="2" description="" />
+   <keyValuePair key="obuf" value="1" description="" />
+   <keyValuePair key="obuft" value="4" description="" />
+   <keyValuePair key="vcc" value="4" description="" />
   </section>
  </section>
  <section name="vivado_usage" level="1" order="7" description="">
