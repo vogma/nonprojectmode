@@ -104,7 +104,7 @@ BEGIN
 
 				IF (tx_done = '1') THEN --Transmission of byte finished
 					char_index_next <= char_index_reg + 1;
-					IF (char_index_reg < BTN_STR'length) THEN
+					IF (char_index_reg < BTN_STR'length-1) THEN
 						state_next <= transmit_byte;
 					ELSE
 						state_next <= finished;
