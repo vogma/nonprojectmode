@@ -1,0 +1,2 @@
+/home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/tb_example_many.vhd:18:17:@0ms:(report note): Das wird klappen
+simulation stopped @0ms with status 0

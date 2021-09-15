@@ -1,0 +1,2 @@
+/home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/tb_example.vhd:15:9:@0ms:(report note): Hello World
+simulation stopped @0ms with status 0

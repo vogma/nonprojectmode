@@ -12,7 +12,7 @@ END sseg_cs_generator;
 
 ARCHITECTURE arch OF sseg_cs_generator IS
     SIGNAL chip_select_reg : STD_LOGIC := '0';
-    SIGNAL clkcnt_reg : unsigned(18 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL clkcnt_reg : unsigned(19 DOWNTO 0) := (OTHERS => '0');
 BEGIN
 
     PROCESS (clk_i)
