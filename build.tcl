@@ -5,10 +5,12 @@ set_part XC7A100TCSG324-1
 
 read_vhdl -library work [ glob ./src/uart/*.vhd ]  
 read_vhdl -library work [ glob ./src/*.vhd ]  
+read_vhdl -library work [glob ./src/sseg/*.vhd]
+#read_vhdl -library work [glob ./src/pmod/*.vhd]
 read_xdc ./constr/Arty-A7-100-Master.xdc       
 read_ip ./src/ip/clk_wiz_test/clk_wiz_test.xci  
 
-synth_design -top top -part XC7A100TCSG324-1 -flatten rebuilt    
+synth_design -top top -part XC7A100TCSG324-1 -flatten rebuilt 
 write_checkpoint -force $outputDir/post_synth
 #report_timing_summary -file $outputDir/post_synth_timing_summary.rpt
 #report_power -file $outputDir/post_synth_power.rpt

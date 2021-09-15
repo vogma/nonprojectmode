@@ -16,7 +16,6 @@ ARCHITECTURE Behavioral OF uart_mirror IS
     SIGNAL rx_done : STD_LOGIC;
     SIGNAL uart_rx_byte : STD_LOGIC_VECTOR(7 DOWNTO 0);
     signal uart_rx_done : std_logic;
-
 BEGIN
 
     uart_receiver : ENTITY work.uart_rx_controller(Behavioral)

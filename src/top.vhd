@@ -7,8 +7,12 @@ USE IEEE.NUMERIC_STD.ALL;
 ENTITY top IS
     PORT (
         clk : IN STD_LOGIC;
+        sw : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
         btn : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
         led : OUT STD_LOGIC_VECTOR (3 DOWNTO 0);
+        ja : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+        jb : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+        sseg_cs_out : OUT STD_LOGIC;
         uart_txd_in : IN STD_LOGIC;
         uart_rxd_out : OUT STD_LOGIC
     );
@@ -20,6 +24,8 @@ ARCHITECTURE Behavioral OF top IS
     SIGNAL r_counter, r_counter_next : unsigned(25 DOWNTO 0) := (OTHERS => '0');
     SIGNAL r_led_counter, r_led_counter_next : unsigned(3 DOWNTO 0) := (OTHERS => '0');
     SIGNAL clk10 : STD_LOGIC;
+    SIGNAL display : STD_LOGIC_VECTOR(6 DOWNTO 0);
+    signal bitinput : STD_LOGIC_VECTOR(7 downto 0);
 
     COMPONENT clk_wiz_test IS
         PORT (
@@ -43,39 +49,52 @@ BEGIN
         i_rx_serial => uart_txd_in
         );
 
-    -- clk_div : clk_wiz_test
-    -- PORT MAP(
-    --     clk_in1 => clk,
-    --     reset => '0',
-    --     clk_out1 => clk10
-    -- );
+    ja <= display(3 DOWNTO 0);
+    jb <= display(6 DOWNTO 4);
 
-    -- PROCESS (clk10)
-    -- BEGIN
-    --     IF (rising_edge(clk10)) THEN
-    --         r_counter <= r_counter_next;
-    --     END IF;
-    -- END PROCESS;
+    clk_div : clk_wiz_test
+    PORT MAP(
+        clk_in1 => clk,
+        reset => '0',
+        clk_out1 => clk10
+    );
 
-    -- PROCESS (r_counter, clk10)
-    -- BEGIN
-    --     IF (rising_edge(clk10)) THEN
-    --         IF (r_counter = 0) THEN
-    --             r_led_counter <= r_led_counter_next;
-    --         END IF;
-    --     END IF;
-    -- END PROCESS;
+    PROCESS (clk)
+    BEGIN
+        IF (rising_edge(clk)) THEN
+            r_counter <= r_counter_next;
+        END IF;
+    END PROCESS;
 
-    -- r_counter_next <= r_counter + 1;
-    -- r_led_counter_next <= r_led_counter + 1;
+    PROCESS (r_counter, clk)
+    BEGIN
+        IF (rising_edge(clk)) THEN
+            IF (r_counter = 0) THEN
+                r_led_counter <= r_led_counter_next;
+            END IF;
+        END IF;
+    END PROCESS;
 
-    -- led <= STD_LOGIC_VECTOR(r_led_counter);
+    r_counter_next <= r_counter + 1;
+    r_led_counter_next <= r_led_counter + 1;
+
+    led <= STD_LOGIC_VECTOR(r_led_counter);
 
     debouncer : ENTITY work.debounce
         PORT MAP(
             clk => clk,
             btn => btn,
             edge => edge
+        );
+
+    bitinput <= sw & btn;
+
+    sseg_pmod_controller : ENTITY work.sseg_controller(arch)
+        PORT MAP(
+            clk => clk,
+            data_i => unsigned(bitinput),
+            sseg_cs_o => sseg_cs_out,
+            sseg_o => display
         );
 
 END Behavioral;
