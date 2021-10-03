@@ -7,6 +7,7 @@ read_vhdl -library work [ glob ./src/uart/*.vhd ]
 read_vhdl -library work [ glob ./src/*.vhd ]  
 read_vhdl -library work [glob ./src/sseg/*.vhd]
 read_vhdl -library work [glob ./src/protocols/*.vhd]
+read_vhdl -library work [glob ./src/vga/*.vhd]
 read_xdc ./constr/Arty-A7-100-Master.xdc       
 read_ip ./src/ip/clk_wiz_test/clk_wiz_test.xci  
 

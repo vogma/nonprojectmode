@@ -1,7 +1,8 @@
 set_part XC7A100TCSG324-1
 
 create_ip -name clk_wiz -dir ./src/ip -vendor xilinx.com -library ip -version 6.0 -module_name clk_wiz_test
-set_property -dict [list CONFIG.Component_Name {clk_wiz_test} CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {30} CONFIG.MMCM_DIVCLK_DIVIDE {5} CONFIG.MMCM_CLKFBOUT_MULT_F {49.875} CONFIG.MMCM_CLKOUT0_DIVIDE_F {33.250} CONFIG.CLKOUT1_JITTER {296.460} CONFIG.CLKOUT1_PHASE_ERROR {293.793}] [get_ips clk_wiz_test]
+#set_property -dict [list CONFIG.Component_Name {clk_wiz_test} CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {25} CONFIG.MMCM_DIVCLK_DIVIDE {5} CONFIG.MMCM_CLKFBOUT_MULT_F {49.875} CONFIG.MMCM_CLKOUT0_DIVIDE_F {33.250} CONFIG.CLKOUT1_JITTER {296.460} CONFIG.CLKOUT1_PHASE_ERROR {293.793}] [get_ips clk_wiz_test]
+set_property -dict [list CONFIG.Component_Name {clk_wiz_test} CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {25} CONFIG.MMCM_CLKFBOUT_MULT_F {10.000} CONFIG.MMCM_CLKOUT0_DIVIDE_F {40.000} CONFIG.MMCM_CLKOUT1_DIVIDE {10} CONFIG.CLKOUT1_JITTER {175.402} CONFIG.CLKOUT1_PHASE_ERROR {98.575} CONFIG.CLKOUT2_JITTER {130.958} CONFIG.CLKOUT2_PHASE_ERROR {98.575}] [get_ips clk_wiz_test]
 
 generate_target {instantiation_template} [get_files ./src/ip/clk_wiz_test/clk_wiz_test.xci]
 update_compile_order
