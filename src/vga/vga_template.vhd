@@ -13,7 +13,9 @@
 ----------------------------------------------------------------------------------
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
+
 USE IEEE.std_logic_unsigned.ALL;
+USE IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -32,6 +34,7 @@ ENTITY vga_template IS
     DISPL_ENA_O : OUT STD_LOGIC;
     VGA_R : OUT STD_LOGIC_VECTOR (3 DOWNTO 0);
     VGA_B : OUT STD_LOGIC_VECTOR (3 DOWNTO 0);
+    dir_cnt_o : OUT unsigned(7 DOWNTO 0);
     VGA_G : OUT STD_LOGIC_VECTOR (3 DOWNTO 0));
 END vga_template;
 
@@ -123,14 +126,14 @@ ARCHITECTURE Behavioral OF vga_template IS
   --constant V_POL : std_logic := '1';
 
   --Moving Box constants
-  CONSTANT BOX_WIDTH : NATURAL := 32;
-  CONSTANT BOX_CLK_DIV : NATURAL := 1000000; --MAX=(2^25 - 1)
+  CONSTANT BOX_WIDTH : NATURAL := 10;
+  CONSTANT BOX_CLK_DIV : NATURAL := 250000; --MAX=(2^25 - 1)
 
-  CONSTANT BOX_X_MAX : NATURAL := (512 - BOX_WIDTH);
+  CONSTANT BOX_X_MAX : NATURAL := (640 - BOX_WIDTH);
   CONSTANT BOX_Y_MAX : NATURAL := (FRAME_HEIGHT - BOX_WIDTH);
 
   CONSTANT BOX_X_MIN : NATURAL := 0;
-  CONSTANT BOX_Y_MIN : NATURAL := 256;
+  CONSTANT BOX_Y_MIN : NATURAL := 0;
 
   CONSTANT BOX_X_INIT : STD_LOGIC_VECTOR(11 DOWNTO 0) := x"000";
   CONSTANT BOX_Y_INIT : STD_LOGIC_VECTOR(11 DOWNTO 0) := x"190"; --400
@@ -163,29 +166,41 @@ ARCHITECTURE Behavioral OF vga_template IS
 
   SIGNAL update_box : STD_LOGIC;
   SIGNAL pixel_in_box : STD_LOGIC;
+
+  SIGNAL dir_cnt : unsigned(7 DOWNTO 0) := (OTHERS => '0');
+
+  SIGNAL box_right_bounds_reached, box_left_bounds_reached, box_upper_bounds_reached, box_lower_bounds_reached : STD_LOGIC;
+
+  COMPONENT clk_wiz_test IS
+    PORT (
+      clk_out1 : OUT STD_LOGIC;
+      reset : IN STD_LOGIC;
+      clk_in1 : IN STD_LOGIC
+    );
+  END COMPONENT;
+
 BEGIN
 
-  pxl_clk <= CLK_I;
+  clk_div_inst : clk_wiz_test
+  PORT MAP
+  (-- Clock in ports
+    clk_in1 => CLK_I,
+    reset => '0',
+    -- Clock out ports
+    clk_out1 => pxl_clk
+  );
+  --  pxl_clk <= CLK_I;
   ----------------------------------------------------
   -------         TEST PATTERN LOGIC           -------
   ----------------------------------------------------
-  vga_red <= h_cntr_reg(5 DOWNTO 2) WHEN (active = '1' AND ((h_cntr_reg < 512 AND v_cntr_reg < 256) AND h_cntr_reg(8) = '1')) ELSE
-    (OTHERS => '1') WHEN (active = '1' AND ((h_cntr_reg < 512 AND NOT(v_cntr_reg < 256)) AND NOT(pixel_in_box = '1'))) ELSE
-    (OTHERS => '1') WHEN (active = '1' AND ((NOT(h_cntr_reg < 512) AND (v_cntr_reg(8) = '1' AND h_cntr_reg(3) = '1')) OR
-    (NOT(h_cntr_reg < 512) AND (v_cntr_reg(8) = '0' AND v_cntr_reg(3) = '1')))) ELSE
-    (OTHERS => '0');
+  vga_red <= (OTHERS => '1') WHEN (active = '1' AND pixel_in_box = '1') ELSE
+  (OTHERS => '0');
 
-  vga_blue <= h_cntr_reg(5 DOWNTO 2) WHEN (active = '1' AND ((h_cntr_reg < 512 AND v_cntr_reg < 256) AND h_cntr_reg(6) = '1')) ELSE
-    (OTHERS => '1') WHEN (active = '1' AND ((h_cntr_reg < 512 AND NOT(v_cntr_reg < 256)) AND NOT(pixel_in_box = '1'))) ELSE
-    (OTHERS => '1') WHEN (active = '1' AND ((NOT(h_cntr_reg < 512) AND (v_cntr_reg(8) = '1' AND h_cntr_reg(3) = '1')) OR
-    (NOT(h_cntr_reg < 512) AND (v_cntr_reg(8) = '0' AND v_cntr_reg(3) = '1')))) ELSE
-    (OTHERS => '0');
+  vga_blue <= (OTHERS => '1') WHEN (active = '1' AND pixel_in_box = '1') ELSE
+  (OTHERS => '0');
 
-  vga_green <= h_cntr_reg(5 DOWNTO 2) WHEN (active = '1' AND ((h_cntr_reg < 512 AND v_cntr_reg < 256) AND h_cntr_reg(7) = '1')) ELSE
-    (OTHERS => '1') WHEN (active = '1' AND ((h_cntr_reg < 512 AND NOT(v_cntr_reg < 256)) AND NOT(pixel_in_box = '1'))) ELSE
-    (OTHERS => '1') WHEN (active = '1' AND ((NOT(h_cntr_reg < 512) AND (v_cntr_reg(8) = '1' AND h_cntr_reg(3) = '1')) OR
-    (NOT(h_cntr_reg < 512) AND (v_cntr_reg(8) = '0' AND v_cntr_reg(3) = '1')))) ELSE
-    (OTHERS => '0');
+  vga_green <= (OTHERS => '1') WHEN (active = '1' AND pixel_in_box = '1') ELSE
+  (OTHERS => '0');
   ------------------------------------------------------
   -------         MOVING BOX LOGIC                ------
   ------------------------------------------------------
@@ -193,30 +208,43 @@ BEGIN
   BEGIN
     IF (rising_edge(pxl_clk)) THEN
       IF (update_box = '1') THEN -- Box wird alle 40ms aktualisiert
-        IF (box_x_dir = '1') THEN 
+        IF (box_x_dir = '1') THEN
           box_x_reg <= box_x_reg + 1;
-        ELSE
+          ELSE
           box_x_reg <= box_x_reg - 1;
         END IF;
         IF (box_y_dir = '1') THEN
           box_y_reg <= box_y_reg + 1;
-        ELSE
+          ELSE
           box_y_reg <= box_y_reg - 1;
         END IF;
       END IF;
     END IF;
   END PROCESS;
 
+  --Signale geben an, ob die Box einen Rand des Bildschirms erreicht hat
+  box_right_bounds_reached <= '1' WHEN (box_x_dir = '1' AND (box_x_reg = BOX_X_MAX - 1)) ELSE
+  '0';
+  box_left_bounds_reached <= '1' WHEN (box_x_dir = '0' AND (box_x_reg = BOX_X_MIN + 1)) ELSE
+  '0';
+
+  box_upper_bounds_reached <= '1' WHEN (box_y_dir = '1' AND (box_y_reg = BOX_Y_MAX - 1)) ELSE
+  '0';
+  box_lower_bounds_reached <= '1' WHEN (box_y_dir = '0' AND (box_y_reg = BOX_Y_MIN + 1)) ELSE
+  '0';
+
   --Logik für Richtungsbestimmung. Wenn Box an Kante ankommt wird die entsprechende Richtung invertiert
   PROCESS (pxl_clk)
   BEGIN
     IF (rising_edge(pxl_clk)) THEN
       IF (update_box = '1') THEN
-        IF ((box_x_dir = '1' AND (box_x_reg = BOX_X_MAX - 1)) OR (box_x_dir = '0' AND (box_x_reg = BOX_X_MIN + 1))) THEN
-          box_x_dir <= NOT(box_x_dir);
+        IF (box_right_bounds_reached = '1' OR box_left_bounds_reached = '1') THEN --Ist Box Rechts oder links angekommen?
+          box_x_dir <= NOT(box_x_dir); --Kehre Richtung um 
+          dir_cnt <= dir_cnt + 1;
         END IF;
-        IF ((box_y_dir = '1' AND (box_y_reg = BOX_Y_MAX - 1)) OR (box_y_dir = '0' AND (box_y_reg = BOX_Y_MIN + 1))) THEN
+        IF (box_upper_bounds_reached = '1' OR box_lower_bounds_reached = '1') THEN
           box_y_dir <= NOT(box_y_dir);
+          dir_cnt <= dir_cnt + 1;
         END IF;
       END IF;
     END IF;
@@ -227,7 +255,7 @@ BEGIN
     IF (rising_edge(pxl_clk)) THEN
       IF (box_cntr_reg = (BOX_CLK_DIV - 1)) THEN
         box_cntr_reg <= (OTHERS => '0');
-      ELSE
+        ELSE
         box_cntr_reg <= box_cntr_reg + 1;
       END IF;
     END IF;
@@ -235,12 +263,12 @@ BEGIN
 
   --alle 1Mio Taktzyklen wird Box Position neu berechnet
   update_box <= '1' WHEN box_cntr_reg = (BOX_CLK_DIV - 1) ELSE
-    '0';
+  '0';
 
   --Aktiv wenn aktueller Pixel Teil der bewegenden Box ist
   pixel_in_box <= '1' WHEN (((h_cntr_reg >= box_x_reg) AND (h_cntr_reg < (box_x_reg + BOX_WIDTH))) AND
-    ((v_cntr_reg >= box_y_reg) AND (v_cntr_reg < (box_y_reg + BOX_WIDTH)))) ELSE
-    '0';
+  ((v_cntr_reg >= box_y_reg) AND (v_cntr_reg < (box_y_reg + BOX_WIDTH)))) ELSE
+  '0';
   ------------------------------------------------------
   -------         SYNC GENERATION                 ------
   ------------------------------------------------------
@@ -251,7 +279,7 @@ BEGIN
     IF (rising_edge(pxl_clk)) THEN
       IF (h_cntr_reg = (H_MAX - 1)) THEN
         h_cntr_reg <= (OTHERS => '0');
-      ELSE
+        ELSE
         h_cntr_reg <= h_cntr_reg + 1;
       END IF;
     END IF;
@@ -263,7 +291,7 @@ BEGIN
     IF (rising_edge(pxl_clk)) THEN
       IF ((h_cntr_reg = (H_MAX - 1)) AND (v_cntr_reg = (V_MAX - 1))) THEN --Nach der letzten Zeile wird an die erste zurückgesprungen
         v_cntr_reg <= (OTHERS => '0');
-      ELSIF (h_cntr_reg = (H_MAX - 1)) THEN --Am Ende einer Zeile wird vertikaler Zähler inkrementiert 
+        ELSIF (h_cntr_reg = (H_MAX - 1)) THEN --Am Ende einer Zeile wird vertikaler Zähler inkrementiert 
         v_cntr_reg <= v_cntr_reg + 1;
       END IF;
     END IF;
@@ -275,7 +303,7 @@ BEGIN
     IF (rising_edge(pxl_clk)) THEN
       IF (h_cntr_reg >= (H_FP + FRAME_WIDTH - 1)) AND (h_cntr_reg < (H_FP + FRAME_WIDTH + H_PW - 1)) THEN
         h_sync_reg <= H_POL;
-      ELSE
+        ELSE
         h_sync_reg <= NOT(H_POL);
       END IF;
     END IF;
@@ -287,7 +315,7 @@ BEGIN
     IF (rising_edge(pxl_clk)) THEN
       IF (v_cntr_reg >= (V_FP + FRAME_HEIGHT - 1)) AND (v_cntr_reg < (V_FP + FRAME_HEIGHT + V_PW - 1)) THEN
         v_sync_reg <= V_POL;
-      ELSE
+        ELSE
         v_sync_reg <= NOT(V_POL);
       END IF;
     END IF;
@@ -295,7 +323,7 @@ BEGIN
 
   --Aktiv wenn aktueller Pixel im Bildschirm liegt (was mit Front Porch?)
   active <= '1' WHEN ((h_cntr_reg < FRAME_WIDTH) AND (v_cntr_reg < FRAME_HEIGHT))ELSE
-    '0';
+  '0';
 
   DISPL_ENA_O <= active;
 
@@ -316,5 +344,6 @@ BEGIN
   VGA_R <= vga_red_reg;
   VGA_G <= vga_green_reg;
   VGA_B <= vga_blue_reg;
+  dir_cnt_o <= dir_cnt;
 
 END Behavioral;

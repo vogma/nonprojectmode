@@ -7,14 +7,17 @@ USE IEEE.NUMERIC_STD.ALL;
 ENTITY top IS
     PORT (
         clk : IN STD_LOGIC;
-        -- sw : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+        sw : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
         -- btn : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
         -- led : OUT STD_LOGIC_VECTOR (3 DOWNTO 0);
         -- ja : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
         -- jb : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-        -- sseg_cs_out : OUT STD_LOGIC;
+        sseg_cs_out : OUT STD_LOGIC;
         -- uart_txd_in : IN STD_LOGIC;
         -- uart_rxd_out : OUT STD_LOGIC;
+        ck_a10_power : OUT STD_LOGIC;
+        ck_a11_power : OUT STD_LOGIC;
+        sseg : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
         vga_red : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
         vga_green : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
         vga_blue : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
@@ -43,16 +46,32 @@ ARCHITECTURE Behavioral OF top IS
     SIGNAL pxl_clk, vga_enable, frame_tick : STD_LOGIC;
     SIGNAL vsync_cnt, hsync_cnt : INTEGER;
 
+    SIGNAL sseg_o : STD_LOGIC_VECTOR(6 DOWNTO 0);
+    SIGNAL sseg_cs_o : STD_LOGIC;
+    signal dir_cnt_o : unsigned(7 downto 0);
 BEGIN
+    ck_a10_power <= '1';
+    ck_a11_power <= '1';
 
-    clk_div_inst : clk_wiz_test
-    PORT MAP
-    (-- Clock in ports
-        clk_in1 => clk,
-        reset => '0',
-        -- Clock out ports
-        clk_out1 => pxl_clk
-    );
+    sseg <= sseg_o;
+    sseg_cs_out <= sseg_cs_o;
+
+    sseg_controller : ENTITY work.sseg_controller(arch)
+        PORT MAP(
+            clk => clk,
+            data_i => dir_cnt_o,
+            sseg_cs_o => sseg_cs_o,
+            sseg_o => sseg_o
+        );
+
+    -- clk_div_inst : clk_wiz_test
+    -- PORT MAP
+    -- (-- Clock in ports
+    --     clk_in1 => clk,
+    --     reset => '0',
+    --     -- Clock out ports
+    --     clk_out1 => pxl_clk
+    -- );
 
     -- uart_demo : ENTITY work.uart_transmitter(Behavioral)
     --     PORT MAP(
@@ -64,16 +83,17 @@ BEGIN
     -- ja <= display(3 DOWNTO 0);
     -- jb <= display(6 DOWNTO 4);
 
-    vga_templ : entity work.vga_template(Behavioral)
-    PORT MAP(
-        CLK_I => pxl_clk,
-        VGA_HS_O => vga_hsync_o,
-        VGA_VS_O => vga_vsync_o,
-        DISPL_ENA_O => OPEN,
-        VGA_R => vga_red,
-        VGA_G => vga_green,
-        VGA_B => vga_blue
-    );
+    vga_templ : ENTITY work.vga_template(Behavioral)
+        PORT MAP(
+            CLK_I => clk,
+            VGA_HS_O => vga_hsync_o,
+            VGA_VS_O => vga_vsync_o,
+            DISPL_ENA_O => OPEN,
+            dir_cnt_o => dir_cnt_o,
+            VGA_R => vga_red,
+            VGA_G => vga_green,
+            VGA_B => vga_blue
+        );
 
     -- graphics_controller : ENTITY work.graphics_controller(Behavioral)
     --     PORT MAP(
@@ -100,10 +120,6 @@ BEGIN
     --         --VGA_BLUE_O => vga_blue,
     --         --VGA_GREEN_O => vga_green
     --     );
-
-
-    
-
     -- PROCESS (clk)
     -- BEGIN
     --     IF (rising_edge(clk)) THEN

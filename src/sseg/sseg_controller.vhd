@@ -20,13 +20,13 @@ BEGIN
     hex_decoder1 : ENTITY work.hex_decoder(arch)
         PORT MAP(
             input => data_i(3 DOWNTO 0),
-            display => sseg_decoder1_o
+            display => sseg_decoder2_o
         );
 
     hex_decoder2 : ENTITY work.hex_decoder(arch)
         PORT MAP(
             input => data_i(7 DOWNTO 4),
-            display => sseg_decoder2_o
+            display => sseg_decoder1_o
         );
 
     chip_select_gen : ENTITY work.sseg_cs_generator(arch)
