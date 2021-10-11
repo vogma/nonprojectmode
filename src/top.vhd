@@ -8,13 +8,13 @@ ENTITY top IS
     PORT (
         clk : IN STD_LOGIC;
         sw : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-        -- btn : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
+        btn : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
         -- led : OUT STD_LOGIC_VECTOR (3 DOWNTO 0);
         -- ja : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
         -- jb : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
         sseg_cs_out : OUT STD_LOGIC;
         -- uart_txd_in : IN STD_LOGIC;
-        -- uart_rxd_out : OUT STD_LOGIC;
+        uart_rxd_out : OUT STD_LOGIC;
         ck_a10_power : OUT STD_LOGIC;
         ck_a11_power : OUT STD_LOGIC;
         sseg : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
@@ -48,7 +48,7 @@ ARCHITECTURE Behavioral OF top IS
 
     SIGNAL sseg_o : STD_LOGIC_VECTOR(6 DOWNTO 0);
     SIGNAL sseg_cs_o : STD_LOGIC;
-    signal dir_cnt_o : unsigned(7 downto 0);
+    SIGNAL dir_cnt_o : unsigned(7 DOWNTO 0);
 BEGIN
     ck_a10_power <= '1';
     ck_a11_power <= '1';
@@ -73,12 +73,19 @@ BEGIN
     --     clk_out1 => pxl_clk
     -- );
 
-    -- uart_demo : ENTITY work.uart_transmitter(Behavioral)
-    --     PORT MAP(
-    --         clk => clk,
-    --         start => edge(0),
-    --         uart_tx => uart_rxd_out
-    --     );
+    debouncer : ENTITY work.debounce
+        PORT MAP(
+            clk => clk,
+            btn => btn,
+            edge => edge
+        );
+
+    uart_demo : ENTITY work.uart_transmitter(Behavioral)
+        PORT MAP(
+            clk => clk,
+            start => edge(0),
+            uart_tx => uart_rxd_out
+        );
 
     -- ja <= display(3 DOWNTO 0);
     -- jb <= display(6 DOWNTO 4);
@@ -140,13 +147,6 @@ BEGIN
     -- r_led_counter_next <= r_led_counter + 1;
 
     -- led <= STD_LOGIC_VECTOR(r_led_counter);
-
-    -- debouncer : ENTITY work.debounce
-    --     PORT MAP(
-    --         clk => clk,
-    --         btn => btn,
-    --         edge => edge
-    --     );
 
     -- bitinput <= sw & btn;
 
