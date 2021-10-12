@@ -1,0 +1,8 @@
+# End time: 14:33:41 on Oct 12,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 1
+# vsim -modelsimini /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/vunit_out/modelsim/modelsim.ini -wlf /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/vunit_out/test_output/lib.uart_rx_controller_tb.test_receive_byte_b2332b00ae7e1ea24f6fa56700908dbfcc7f4073/modelsim/vsim.wlf -quiet -t ps -onfinish stop lib.uart_rx_controller_tb(rtl) -L vunit_lib -L lib -g/uart_rx_controller_tb/runner_cfg="active python runner : true,enabled_test_cases : test_receive_byte,output path : /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/vunit_out/test_output/lib.uart_rx_controller_tb.test_receive_byte_b2332b00ae7e1ea24f6fa56700908dbfcc7f4073/,tb path : /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/,use_color : true" 
+# Start time: 14:33:41 on Oct 12,2021
+# ** Warning: Design size of 21697 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
+# Expect performance to be adversely affected.
+# Break in Subprogram stop at /home/marco/.local/lib/python3.9/site-packages/vunit/vhdl/core/src/stop_body_2008p.vhd line 13
+# Stopped at /home/marco/.local/lib/python3.9/site-packages/vunit/vhdl/core/src/stop_body_2008p.vhd line 13

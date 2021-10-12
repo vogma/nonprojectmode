@@ -65,6 +65,7 @@ BEGIN
                 END IF;
 
             WHEN receive_startbit =>
+                rx_active <= '1';
                 dec <= '1';
                 IF (clk_cnt_reg = (clks_per_bit - 1)/2) THEN
                     IF (rx_serial = '0') THEN
@@ -79,6 +80,7 @@ BEGIN
 
             WHEN receive_databits =>
                 dec <= '1';
+                rx_active <= '1';
                 IF (zero = '1') THEN
                     rxbyte_next(bitIndex_reg) <= rx_serial;
                     load <= '1';
@@ -91,6 +93,7 @@ BEGIN
                     END IF;
                 END IF;
             WHEN receive_stopbit =>
+                rx_active <= '1';
                 dec <= '1';
                 IF (zero = '1') THEN --Stop Bit finished
                     rx_done <= '1';
