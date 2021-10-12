@@ -24,7 +24,7 @@ ARCHITECTURE Behavioral OF uart_rx_controller IS
     SIGNAL clk_cnt_reg, clk_cnt_next : unsigned(13 DOWNTO 0) := (OTHERS => '0');
     SIGNAL rxbyte_reg, rxbyte_next : STD_LOGIC_VECTOR(7 DOWNTO 0) := (OTHERS => '0');
     SIGNAL bitIndex_reg, bitIndex_next : INTEGER RANGE 0 TO 7 := 0;
-
+    SIGNAL rx_done_reg, rx_done_next : STD_LOGIC := '0';
     SIGNAL load, dec, zero : STD_LOGIC;
 
 BEGIN
@@ -35,6 +35,7 @@ BEGIN
             state_reg <= state_next;
             clk_cnt_reg <= clk_cnt_next;
             rxbyte_reg <= rxbyte_next;
+            rx_done_reg <= rx_done_next;
             bitIndex_reg <= bitIndex_next;
         END IF;
     END PROCESS;
@@ -46,14 +47,16 @@ BEGIN
     zero <= '1' WHEN clk_cnt_reg = 0 ELSE
         '0';
 
+    rx_done <= rx_done_reg;
+    rx_byte <= rxbyte_reg;
+
     PROCESS (state_reg, rx_serial, zero, rxbyte_reg, bitIndex_reg, clk_cnt_reg)
     BEGIN
         state_next <= state_reg;
         rxbyte_next <= rxbyte_reg;
+        rx_done_next <= rx_done_reg;
         bitIndex_next <= bitIndex_reg;
-        rx_byte <= (OTHERS => '0');
         rx_active <= '0';
-        rx_done <= '0';
         load <= '0';
         dec <= '0';
 
@@ -61,6 +64,7 @@ BEGIN
             WHEN idle =>
                 IF (rx_serial = '0') THEN
                     load <= '1';
+                    rxbyte_next <= (others => '0');
                     state_next <= receive_startbit;
                 END IF;
 
@@ -96,12 +100,12 @@ BEGIN
                 rx_active <= '1';
                 dec <= '1';
                 IF (zero = '1') THEN --Stop Bit finished
-                    rx_done <= '1';
-                    rx_byte <= rxbyte_reg;
+                    rx_done_next <= '1';
                     state_next <= cleanup;
                 END IF;
 
             WHEN cleanup =>
+                rx_done_next <= '0';
                 state_next <= idle;
         END CASE;
     END PROCESS;
