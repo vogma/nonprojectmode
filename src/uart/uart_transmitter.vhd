@@ -122,7 +122,7 @@ BEGIN
 	tx_controller : ENTITY work.uart_tx_controller(arch)
 		GENERIC MAP(
 			clk_rate => 100_000_000,
-			baud_rate => 9600
+			baud_rate => 115200
 		)
 		PORT MAP(
 			clk => CLK,

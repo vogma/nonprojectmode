@@ -1,0 +1,5 @@
+uart_mirror__GB0
+uart_mirror__GB1
+uart_mirror__GB2
+uart_mirror__GB3
+top__GC0
