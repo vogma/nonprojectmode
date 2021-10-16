@@ -18,21 +18,22 @@ ENTITY uart_controller IS
         ram_ena : OUT STD_LOGIC;
         ram_write_ena : OUT STD_LOGIC;
         ram_address : OUT STD_LOGIC_VECTOR(18 DOWNTO 0);
-        ram_data_in : OUT STD_LOGIC_VECTOR(11 DOWNTO 0)
+        ram_data_in : OUT STD_LOGIC_VECTOR(11 DOWNTO 0);
+        debug : OUT unsigned(7 DOWNTO 0)
     );
 END uart_controller;
 
 ARCHITECTURE arch OF uart_controller IS
     TYPE state_type IS (idle, save_pxl_to_ram, receive, read_blue, read_green, transmit_state, start_transmission, write_to_ram, cleanup);
+
     SIGNAL state_reg, state_next : state_type := idle;
-
     SIGNAL index_reg, index_next : INTEGER RANGE 0 TO 400_000 := 0;
-    SIGNAL rx_busy_prev : STD_LOGIC;
-
+    SIGNAL debug_reg, debug_next : unsigned(7 DOWNTO 0);
     SIGNAL ram_address_reg, ram_address_next, ram_max, ram_max_next : unsigned(18 DOWNTO 0) := (OTHERS => '0');
     SIGNAL clk_cnt_reg, clk_cnt_next : INTEGER RANGE 0 TO 2 := 2;
     SIGNAL pxl_reg, pxl_next : STD_LOGIC_VECTOR(11 DOWNTO 0) := (OTHERS => '0');
 
+    SIGNAL rx_busy_prev : STD_LOGIC;
 BEGIN
     reset_out <= '1';
     ram_ena <= '1';
@@ -48,13 +49,15 @@ BEGIN
             ram_max <= ram_max_next;
             clk_cnt_reg <= clk_cnt_next;
             pxl_reg <= pxl_next;
+            debug_reg <= debug_next;
         END IF;
     END PROCESS;
 
     --Debug auf HEX-Display
+    debug <= debug_reg;
     --out_byte <= unsigned(bram_data_out(7 DOWNTO 0));
 
-    PROCESS (state_reg, clk_cnt_reg, state_reg, ram_address_reg, rx_busy_prev, rx_busy, index_reg)
+    PROCESS (state_reg, tx_busy, clk_cnt_reg, debug_reg, ram_address_reg, rx_busy_prev, rx_busy, index_reg)
     BEGIN
         state_next <= state_reg;
         index_next <= index_reg;
@@ -64,11 +67,14 @@ BEGIN
         ram_address_next <= ram_address_reg;
         ram_max_next <= ram_max;
         pxl_next <= pxl_reg;
+        debug_next <= debug_reg;
         tx_data <= (OTHERS => '0');
 
         CASE state_reg IS
 
             WHEN idle =>
+
+                debug_next <= "00000001";
 
                 --Uart Received
                 IF rx_busy_prev = '1' AND rx_busy = '0' THEN
@@ -80,8 +86,9 @@ BEGIN
                     ram_address_next <= (OTHERS => '0');
                 END IF;
 
-                --Start Transmission
+                --Start Trainit_transmissionnsmission
                 IF init_transmission = '1' THEN
+                    debug_next <= "00000010";
                     ram_max_next <= ram_address_reg;
                     ram_address_next <= (OTHERS => '0');
                     state_next <= cleanup;
@@ -114,14 +121,17 @@ BEGIN
                 END IF;
 
             WHEN start_transmission =>
+                debug_next <= "00000100";
                 tx_ena <= '1';
                 tx_data <= ram_data_out(7 DOWNTO 0);
                 ram_address_next <= ram_address_reg + 1;
                 state_next <= transmit_state;
 
             WHEN transmit_state =>
+                debug_next <= "00001000";
+                debug_next(2) <= tx_busy;
                 IF tx_busy = '0' THEN
-                    IF index_reg = ram_max - 1 THEN
+                    IF index_reg = 63 THEN
                         state_next <= idle;
                         ram_address_next <= (OTHERS => '0');
                         index_next <= 0;
