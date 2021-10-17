@@ -1,0 +1,4 @@
+fifo_generator_v13_2_5,Verilog,/home/marco/entwicklung/projekte/vunit/examples/vhdl/vivado/myproject_ip/fifo_8b_32w/simulation/fifo_generator_vlog_beh.v
+fifo_generator_v13_2_5,VHDL,/home/marco/entwicklung/projekte/vunit/examples/vhdl/vivado/myproject_ip/fifo_8b_32w/hdl/fifo_generator_v13_2_rfs.vhd
+fifo_generator_v13_2_5,Verilog,/home/marco/entwicklung/projekte/vunit/examples/vhdl/vivado/myproject_ip/fifo_8b_32w/hdl/fifo_generator_v13_2_rfs.v
+xil_defaultlib,Verilog,/home/marco/entwicklung/projekte/vunit/examples/vhdl/vivado/myproject_ip/fifo_8b_32w/sim/fifo_8b_32w.v
