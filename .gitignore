@@ -27,7 +27,7 @@
 #*.xci(www.spiritconsortium.org)
 !*.xci
 #*.dcp(checkpoint files)
-!*.dcp
+#!*.dcp
 !*.vds
 !*.pb
 #All bd comments and layout coordinates are stored within .ui
@@ -69,11 +69,11 @@
 #########
 #Journal - files
 #########
-!*.jou
+#!*.jou
 #########
 #Reports
 #########
-!*.rpt
+#!*.rpt
 !*.txt
 !*.vdi
 #########
