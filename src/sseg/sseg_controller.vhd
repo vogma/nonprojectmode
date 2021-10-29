@@ -4,6 +4,10 @@ USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
 ENTITY sseg_controller IS
+    GENERIC (
+        clk_freq : INTEGER := 100_000_000;
+        toggle_freq : INTEGER := 50 --Frequency with which the Entity switches from one Seven Segment Display to the other
+    );
     PORT (
         clk : IN STD_LOGIC;
         data_i : IN unsigned(7 DOWNTO 0);
@@ -13,7 +17,7 @@ ENTITY sseg_controller IS
 END sseg_controller;
 
 ARCHITECTURE arch OF sseg_controller IS
-    SIGNAL sseg_decoder1_o, sseg_decoder2_o : STD_LOGIC_VECTOR(6 DOWNTO 0) := (others => '0');
+    SIGNAL sseg_decoder1_o, sseg_decoder2_o : STD_LOGIC_VECTOR(6 DOWNTO 0) := (OTHERS => '0');
     SIGNAL sseg_cs_sig : STD_LOGIC;
 BEGIN
 
@@ -30,6 +34,10 @@ BEGIN
         );
 
     chip_select_gen : ENTITY work.sseg_cs_generator(arch)
+        GENERIC MAP(
+            clk_freq => clk_freq,
+            toggle_freq => toggle_freq
+        )
         PORT MAP(
             clk_i => clk,
             chip_select_o => sseg_cs_sig

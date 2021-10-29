@@ -30,7 +30,8 @@ BEGIN
 		"0001111" WHEN x"c",
 		"1110011" WHEN x"d",
 		"1001111" WHEN x"e",
-		"1001110" WHEN x"f";
+		"1001110" WHEN x"f",
+		(others => '0') WHEN others;
 	-- "0000001" when x"9", --unten 
 	-- "0000010" when x"a", --links unten
 	-- "0000100" when x"b", -- links oben

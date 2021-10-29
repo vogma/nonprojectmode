@@ -33,7 +33,8 @@
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
-USE ieee.std_logic_unsigned.ALL;
+--USE ieee.std_logic_unsigned.ALL;
+USE IEEE.NUMERIC_STD.ALL;
 
 ENTITY i2c_master IS
 	GENERIC (
@@ -54,7 +55,7 @@ ENTITY i2c_master IS
 END i2c_master;
 
 ARCHITECTURE logic OF i2c_master IS
-	CONSTANT divider : INTEGER := (input_clk/bus_clk)/4; -- number of clocks in 1/4 cycle of scl
+	CONSTANT divider : INTEGER := 63; -- number of clocks in 1/4 cycle of scl
 
 	TYPE machine IS(ready, start, command, slv_ack1, wr, rd, slv_ack2, mstr_ack, stop); -- states
 	SIGNAL state, state_next : machine; -- state machine
@@ -71,7 +72,7 @@ ARCHITECTURE logic OF i2c_master IS
 	SIGNAL data_tx, data_tx_next : STD_LOGIC_VECTOR(7 DOWNTO 0); -- latched in data to write to slave
 	SIGNAL data_rx, data_rx_next : STD_LOGIC_VECTOR(7 DOWNTO 0); -- data received from slave
 	SIGNAL stretch_reg, stretch_next : STD_LOGIC; -- stretch from slave
-	SIGNAL busy_r, busy_next : STD_LOGIC; -- busy flag
+	SIGNAL busy_r, busy_next : STD_LOGIC := '0'; -- busy flag
 	SIGNAL ack_reg, ack_next : STD_LOGIC; -- acknowledge flag
 	SIGNAL data_clk_re, data_clk_fe : STD_LOGIC; -- rising and falling edge of data_clk
 

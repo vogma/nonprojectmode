@@ -1,6 +1,5 @@
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
-USE IEEE.std_logic_unsigned.ALL;
 USE IEEE.NUMERIC_STD.ALL;
 
 ENTITY uart_controller IS
