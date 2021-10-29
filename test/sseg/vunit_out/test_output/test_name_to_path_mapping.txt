@@ -1,0 +1,2 @@
+lib.sseg_controller_tb.test_init_zero_e6545c884cd0e18e39c17b0b1dea9af6a51e40b6 lib.sseg_controller_tb.test_init_zero
+lib.temp_controller_tb.test_init_zero_73bc195dd7a896c0c6a590f16310af1b5d490003 lib.temp_controller_tb.test_init_zero
