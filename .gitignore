@@ -2,6 +2,9 @@
 ##	This is an example .gitignore file for Vivado, please treat it as an example as 
 ##	it might not be complete. In addition, XAPP 1165 should be followed.
 #########################################################################################################
+
+test/vunit_out
+test/vunit_out/*
 #########
 #Exclude all
 #########
@@ -18,6 +21,7 @@
 !*.vhd
 !*.v
 !*.bd
+!*.py
 !*.edif
 #########
 #IP files

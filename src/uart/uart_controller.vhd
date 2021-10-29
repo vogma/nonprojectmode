@@ -1,5 +1,6 @@
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.std_logic_unsigned.ALL;
 USE IEEE.NUMERIC_STD.ALL;
 
 ENTITY uart_controller IS
@@ -73,7 +74,7 @@ BEGIN
 
             WHEN idle =>
 
-                debug_next <= "00000001";
+                debug_next <= "00000101";
 
                 --Uart Received
                 IF rx_busy_prev = '1' AND rx_busy = '0' THEN

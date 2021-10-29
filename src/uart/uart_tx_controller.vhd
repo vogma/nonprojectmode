@@ -95,6 +95,7 @@ BEGIN
             WHEN idle =>
                 IF (tx_start = '1') THEN
                     load <= '1';
+                    tx_active <= '1';
                     tx_data_next <= tx_byte; --save byte in register
                     state_next <= send_start_bit;
                 END IF;
