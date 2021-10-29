@@ -1,3 +1,0 @@
-simulation stopped @5500015ns with status 0
-skip (P=0 S=1 F=0 T=1) lib.sseg_controller_tb.test_init_zero (556.7 seconds)
-
