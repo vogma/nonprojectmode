@@ -48,7 +48,8 @@ BEGIN
         '0';
 
     rx_done <= rx_done_reg;
-    rx_byte <= rxbyte_reg;
+    rx_byte <= rxbyte_reg WHEN rx_done_reg = '1' ELSE
+        (OTHERS => '0');
 
     PROCESS (state_reg, rx_serial, zero, rxbyte_reg, bitIndex_reg, clk_cnt_reg)
     BEGIN
@@ -64,7 +65,7 @@ BEGIN
             WHEN idle =>
                 IF (rx_serial = '0') THEN
                     load <= '1';
-                    rxbyte_next <= (others => '0');
+                    rxbyte_next <= (OTHERS => '0');
                     state_next <= receive_startbit;
                 END IF;
 

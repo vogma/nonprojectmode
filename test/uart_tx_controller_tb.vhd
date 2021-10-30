@@ -38,6 +38,24 @@ ARCHITECTURE rtl OF uart_tx_controller_tb IS
     --uart_tx_dut signals
     SIGNAL clk, tx_start_i, tx_active_o, tx_serial_o, tx_done_o : STD_LOGIC := '0';
     SIGNAL tx_byte_i : STD_LOGIC_VECTOR(7 DOWNTO 0) := (OTHERS => '0');
+
+    --Procedure to check correct Uart Transmission on serial line
+    PROCEDURE check_uart_transmission (
+        SIGNAL tx_serial_in : IN STD_LOGIC;
+        expected_byte : IN STD_LOGIC_VECTOR(7 DOWNTO 0)) IS
+    BEGIN
+        WAIT UNTIL tx_serial_in = '0'; --start bit
+        WAIT FOR c_bit_period/2;
+        check(expr => tx_serial_in = '0', msg => "Expected tx_serial to be '0' during start bit (value:" & to_string(tx_serial_in) & ")");
+        WAIT FOR c_bit_period;
+        FOR ii IN 0 TO 7 LOOP
+            --Check that the expected bit is being transmitted
+            check(
+            expr => tx_serial_in = expected_byte(ii),
+            msg => "Expected tx_serial_o to be " & to_string(test_byte(ii)) & " at Position " & INTEGER'IMAGE(ii));
+            WAIT FOR c_bit_period; --Wait until the next bit has been stable for half the time on serial line
+        END LOOP;
+    END check_uart_transmission;
 BEGIN
 
     clk <= NOT clk AFTER c_clk_period / 2;
@@ -73,15 +91,6 @@ BEGIN
     --Connect serial port of transmitter with the receiving entity
     rx_serial_i <= tx_serial_o;
 
-    --Every Time the receiving entity finishes a transmission the received byte is compared to the previously transmitted byte
-    PROCESS (rx_done_o)
-    BEGIN
-        IF rx_done_o = '1' THEN
-            received_byte <= rx_byte_o;
-            check(expr => received_byte = byte_transmitted, msg => "Mismatch between transmitted and received byte. Received: " & to_string(received_byte) & " transmitted: " & to_string(byte_transmitted));
-        END IF;
-    END PROCESS;
-
     main : PROCESS
     BEGIN
         test_runner_setup(runner, runner_cfg);
@@ -105,37 +114,43 @@ BEGIN
                 tx_byte_i <= test_byte;
                 WAIT UNTIL rising_edge(clk); --Nach der zweiten Taktflanke sind Daten gelatched und serial wird auf '0' gezogen
                 check(expr => tx_active_o = '1', msg => "Expected tx_active_o to be '1'");
+                tx_start_i <= '1'; 
+                tx_byte_i <= (others => '0');
+                check_uart_transmission(tx_serial_o,test_byte);
+                -- WAIT FOR c_bit_period/2;
+                -- check(expr => tx_serial_o = '0', msg => "Expected tx_serial_o to be '0' to signal start of transmission");
+                
+                
+                -- WAIT FOR c_bit_period;
 
-                WAIT FOR c_bit_period/2;
-                check(expr => tx_serial_o = '0', msg => "Expected tx_serial_o to be '0' to signal start of transmission");
-                WAIT FOR c_bit_period;
+                -- FOR ii IN 0 TO 7 LOOP
+                --     check(
+                --     expr => tx_serial_o = test_byte(ii),
+                --     msg => "Expected tx_serial_o to be " & INTEGER'IMAGE(to_integer(unsigned(test_byte(ii DOWNTO ii)))) & " at Position " & INTEGER'IMAGE(ii));
+                --     WAIT FOR c_bit_period;
+                -- END LOOP;
 
-                FOR ii IN 0 TO 7 LOOP
-                    check(
-                    expr => tx_serial_o = test_byte(ii),
-                    msg => "Expected tx_serial_o to be " & INTEGER'IMAGE(to_integer(unsigned(test_byte(ii DOWNTO ii)))) & " at Position " & INTEGER'IMAGE(ii));
-                    WAIT FOR c_bit_period;
-                END LOOP;
-
-                check(expr => tx_serial_o = '1', msg => "Expected tx_serial_o to be '1' (Stop Bit Check)");
+                --check(expr => tx_serial_o = '1', msg => "Expected tx_serial_o to be '1' (Stop Bit Check)");
                 WAIT UNTIL tx_done_o = '1';
 
-            ELSIF run("test_send_multiple_values") THEN
+            ELSIF run("test_transmit_multiple_values") THEN
                 FOR y IN 0 TO height(c_csv_loaded) - 1 LOOP
                     FOR x IN 0 TO width(c_csv_loaded) - 1 LOOP
+                        byte_transmitted <= STD_LOGIC_VECTOR(to_unsigned(get(c_csv_loaded, x, y), 8));
                         WAIT UNTIL rising_edge(clk);
                         tx_start_i <= '1';
-                        info("Sending UART Byte: " & to_string(to_unsigned(get(c_csv_loaded, x, y), 8)));
-                        tx_byte_i <= STD_LOGIC_VECTOR(to_unsigned(get(c_csv_loaded, x, y), 8));
+                        info("Sending UART Byte: " & to_string(byte_transmitted));
+                        tx_byte_i <= byte_transmitted;
                         WAIT UNTIL rising_edge(clk);
                         tx_start_i <= '0';
                         tx_byte_i <= (OTHERS => '0');
+                        check_uart_transmission(tx_serial_o, byte_transmitted);
                         WAIT UNTIL tx_done_o <= '1';
-                        byte_transmitted <= STD_LOGIC_VECTOR(to_unsigned(get(c_csv_loaded, x, y), 8));
                     END LOOP;
                 END LOOP;
             END IF;
         END LOOP;
+
         test_runner_cleanup(runner);
     END PROCESS main;
 
