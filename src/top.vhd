@@ -152,15 +152,16 @@ ARCHITECTURE Behavioral OF top IS
 
     SIGNAL led_reg, led_next : STD_LOGIC := '0';
 
+    SIGNAL clk_cnt_reg, clk_cnt_next : unsigned(7 DOWNTO 0) := (OTHERS => '0');
     SIGNAL app_en_reg, app_en_next : STD_LOGIC := '0';
     SIGNAL data_to_write : STD_LOGIC_VECTOR(127 DOWNTO 0) := X"123456789ABCDEF123456789ABCDEFFF";
     SIGNAL data_read_from_memory_reg, data_read_from_memory_next : STD_LOGIC_VECTOR(127 DOWNTO 0) := (OTHERS => '0');
 BEGIN
-     ck_a10_power <= '1';
+    ck_a10_power <= '1';
     ck_a11_power <= '1';
 
-     sseg <= sseg_o;
-     sseg_cs_out <= sseg_cs_o;
+    sseg <= sseg_o;
+    sseg_cs_out <= sseg_cs_o;
 
     led(0) <= init_calib_complete;
     led(3) <= led_reg;
@@ -171,7 +172,7 @@ BEGIN
     sseg_controller : ENTITY work.sseg_controller(arch)
         PORT MAP(
             clk => clk,
-            data_i => unsigned(data_read_from_memory_reg(7 downto 0)),
+            data_i => clk_cnt_reg,
             sseg_cs_o => sseg_cs_o,
             sseg_o => sseg_o
         );
@@ -180,6 +181,7 @@ BEGIN
     BEGIN
         IF ui_clk_sync_rst = '1' THEN
             state_reg <= IDLE;
+            clk_cnt_reg <= (others => '0');
             app_en_reg <= '0';
             app_wdf_wren_reg <= '0';
             app_addr_reg <= (OTHERS => '0');
@@ -190,6 +192,7 @@ BEGIN
         ELSIF rising_edge(ui_clk) THEN
             state_reg <= state_next;
             app_en_reg <= app_en_next;
+            clk_cnt_reg <= clk_cnt_next;
             app_wdf_wren_reg <= app_wdf_wren_next;
             app_addr_reg <= app_addr_next;
             app_cmd_reg <= app_cmd_next;
@@ -205,13 +208,14 @@ BEGIN
     app_cmd <= app_cmd_reg;
     app_wdf_data <= app_wdf_data_reg;
 
-    PROCESS (init_calib_complete, app_rdy, app_wdf_rdy, app_wdf_wren, app_en_reg, app_rd_data_valid, data_to_write, app_wdf_data_reg, app_wdf_wren_reg, app_cmd_reg, app_addr_reg, data_read_from_memory_reg)
+    PROCESS (init_calib_complete, app_rdy,state_reg,led_reg,app_rd_data ,clk_cnt_reg, app_wdf_rdy, app_wdf_wren, app_en_reg, app_rd_data_valid, data_to_write, app_wdf_data_reg, app_wdf_wren_reg, app_cmd_reg, app_addr_reg, data_read_from_memory_reg)
     BEGIN
         state_next <= state_reg;
         app_en_next <= app_en_reg;
         app_wdf_wren_next <= app_wdf_wren_reg;
         app_addr_next <= app_addr_reg;
         app_cmd_next <= app_cmd_reg;
+        clk_cnt_next <= clk_cnt_reg;
         app_wdf_data_next <= app_wdf_data_reg;
         data_read_from_memory_next <= data_read_from_memory_reg;
         led_next <= led_reg;
@@ -233,6 +237,7 @@ BEGIN
                 END IF;
 
             WHEN WRITE_DONE =>
+
                 IF app_rdy = '1' AND app_en_reg = '1' THEN
                     app_en_next <= '0';
                 END IF;
@@ -247,6 +252,7 @@ BEGIN
 
             WHEN READ =>
                 IF app_rdy = '1' THEN
+                    clk_cnt_next <= clk_cnt_reg + 1;
                     app_en_next <= '1';
                     app_addr_next <= (OTHERS => '0');
                     app_cmd_next <= "001";
@@ -254,6 +260,8 @@ BEGIN
                 END IF;
 
             WHEN READ_DONE =>
+                clk_cnt_next <= clk_cnt_reg + 1;
+
                 IF app_rdy = '1' AND app_en_reg = '1' THEN
                     app_en_next <= '0';
                 END IF;
@@ -297,7 +305,7 @@ BEGIN
         app_en => app_en,
         app_wdf_data => app_wdf_data,
         app_wdf_end => '0',
-        app_wdf_mask => (others => '0'),
+        app_wdf_mask => (OTHERS => '0'),
         app_wdf_wren => app_wdf_wren,
         app_rd_data => app_rd_data,
         app_rd_data_end => app_rd_data_end,
