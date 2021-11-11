@@ -1,8 +1,8 @@
 // Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
-// Date        : Sat Sep 11 16:01:02 2021
-// Host        : marco running 64-bit Ubuntu 21.04
+// Date        : Wed Nov 10 19:40:02 2021
+// Host        : marco running 64-bit Ubuntu 21.10
 // Command     : write_verilog -force -mode funcsim
 //               /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/src/ip/clk_wiz_test/clk_wiz_test_sim_netlist.v
 // Design      : clk_wiz_test
@@ -16,22 +16,18 @@
 module clk_wiz_test
    (clk_out1,
     reset,
-    locked,
     clk_in1);
   output clk_out1;
   input reset;
-  output locked;
   input clk_in1;
 
   (* IBUF_LOW_PWR *) wire clk_in1;
   wire clk_out1;
-  wire locked;
   wire reset;
 
   clk_wiz_testclk_wiz_test_clk_wiz inst
        (.clk_in1(clk_in1),
         .clk_out1(clk_out1),
-        .locked(locked),
         .reset(reset));
 endmodule
 
@@ -39,11 +35,9 @@ endmodule
 module clk_wiz_testclk_wiz_test_clk_wiz
    (clk_out1,
     reset,
-    locked,
     clk_in1);
   output clk_out1;
   input reset;
-  output locked;
   input clk_in1;
 
   wire clk_in1;
@@ -52,7 +46,6 @@ module clk_wiz_testclk_wiz_test_clk_wiz
   wire clk_out1_clk_wiz_test;
   wire clkfbout_buf_clk_wiz_test;
   wire clkfbout_clk_wiz_test;
-  wire locked;
   wire reset;
   wire NLW_mmcm_adv_inst_CLKFBOUTB_UNCONNECTED;
   wire NLW_mmcm_adv_inst_CLKFBSTOPPED_UNCONNECTED;
@@ -68,6 +61,7 @@ module clk_wiz_testclk_wiz_test_clk_wiz
   wire NLW_mmcm_adv_inst_CLKOUT5_UNCONNECTED;
   wire NLW_mmcm_adv_inst_CLKOUT6_UNCONNECTED;
   wire NLW_mmcm_adv_inst_DRDY_UNCONNECTED;
+  wire NLW_mmcm_adv_inst_LOCKED_UNCONNECTED;
   wire NLW_mmcm_adv_inst_PSDONE_UNCONNECTED;
   wire [15:0]NLW_mmcm_adv_inst_DO_UNCONNECTED;
 
@@ -91,12 +85,12 @@ module clk_wiz_testclk_wiz_test_clk_wiz
   (* BOX_TYPE = "PRIMITIVE" *) 
   MMCME2_ADV #(
     .BANDWIDTH("OPTIMIZED"),
-    .CLKFBOUT_MULT_F(49.875000),
+    .CLKFBOUT_MULT_F(10.000000),
     .CLKFBOUT_PHASE(0.000000),
     .CLKFBOUT_USE_FINE_PS("FALSE"),
     .CLKIN1_PERIOD(10.000000),
     .CLKIN2_PERIOD(0.000000),
-    .CLKOUT0_DIVIDE_F(33.250000),
+    .CLKOUT0_DIVIDE_F(5.000000),
     .CLKOUT0_DUTY_CYCLE(0.500000),
     .CLKOUT0_PHASE(0.000000),
     .CLKOUT0_USE_FINE_PS("FALSE"),
@@ -126,7 +120,7 @@ module clk_wiz_testclk_wiz_test_clk_wiz
     .CLKOUT6_PHASE(0.000000),
     .CLKOUT6_USE_FINE_PS("FALSE"),
     .COMPENSATION("ZHOLD"),
-    .DIVCLK_DIVIDE(5),
+    .DIVCLK_DIVIDE(1),
     .IS_CLKINSEL_INVERTED(1'b0),
     .IS_PSEN_INVERTED(1'b0),
     .IS_PSINCDEC_INVERTED(1'b0),
@@ -165,7 +159,7 @@ module clk_wiz_testclk_wiz_test_clk_wiz
         .DO(NLW_mmcm_adv_inst_DO_UNCONNECTED[15:0]),
         .DRDY(NLW_mmcm_adv_inst_DRDY_UNCONNECTED),
         .DWE(1'b0),
-        .LOCKED(locked),
+        .LOCKED(NLW_mmcm_adv_inst_LOCKED_UNCONNECTED),
         .PSCLK(1'b0),
         .PSDONE(NLW_mmcm_adv_inst_PSDONE_UNCONNECTED),
         .PSEN(1'b0),

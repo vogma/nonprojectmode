@@ -1,1 +1,2 @@
-simulation stopped @48745ns with status 0
+skip (P=0 S=1 F=0 T=1) lib.temp_controller_tb.test_init_zero (1187.3 seconds)
+

@@ -1,0 +1,54 @@
+# vsim -modelsimini /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/vunit_out/modelsim/modelsim.ini -wlf /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/vunit_out/test_output/lib.uart_tx_controller_tb.test_transmit_multiple_values_e22200068d949cf8e4de18e7f5b2eb01e6f4a55b/modelsim/vsim.wlf -quiet -t ps -onfinish stop lib.uart_tx_controller_tb(rtl) -L vunit_lib -L lib -g/uart_tx_controller_tb/runner_cfg="active python runner : true,enabled_test_cases : test_transmit_multiple_values,output path : /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/vunit_out/test_output/lib.uart_tx_controller_tb.test_transmit_multiple_values_e22200068d949cf8e4de18e7f5b2eb01e6f4a55b/,tb path : /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/,use_color : true" -g/uart_tx_controller_tb/tb_path=/home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/ 
+# Start time: 19:32:50 on Nov 04,2021
+# ** Warning: Design size of 21830 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
+# Expect performance to be adversely affected.
+#          [22;96;49m5000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00001001
+#      [22;96;49m82475000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#      [22;96;49m86825000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00001010
+#     [22;96;49m169295000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#     [22;96;49m173645000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00000010
+#     [22;96;49m256115000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#     [22;96;49m260465000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00001010
+#     [22;96;49m342935000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#     [22;96;49m347285000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00001011
+#     [22;96;49m429755000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#     [22;96;49m434105000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00000011
+#     [22;96;49m516575000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#     [22;96;49m520925000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00001010
+#     [22;96;49m603395000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#     [22;96;49m607745000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00001100
+#     [22;96;49m690215000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#     [22;96;49m694565000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00000011
+#     [22;96;49m777035000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#     [22;96;49m781385000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00001011
+#     [22;96;49m863855000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#     [22;96;49m868205000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00001100
+#     [22;96;49m950675000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#     [22;96;49m955025000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00000011
+#    [22;96;49m1037495000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#    [22;96;49m1041845000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00001001
+#    [22;96;49m1124315000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#    [22;96;49m1128665000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00001011
+#    [22;96;49m1211135000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#    [22;96;49m1215485000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00000010
+#    [22;96;49m1297955000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#    [22;96;49m1302305000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00000110
+#    [22;96;49m1384775000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#    [22;96;49m1389125000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00001000
+#    [22;96;49m1471595000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#    [22;96;49m1475945000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00000000
+#    [22;96;49m1558415000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#    [22;96;49m1562765000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00000101
+#    [22;96;49m1645235000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#    [22;96;49m1649585000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00000111
+#    [22;96;49m1732055000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#    [22;96;49m1736405000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00000000
+#    [22;96;49m1818875000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#    [22;96;49m1823225000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00000110
+#    [22;96;49m1905695000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#    [22;96;49m1910045000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00001000
+#    [22;96;49m1992515000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+#    [22;96;49m1996865000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Sending UART Byte: 00000000
+#    [22;96;49m2079335000 ps[0m - [1;37;49mdefault[0m              -    [1;37;49mINFO[0m - Transmitted byte matched expected byte
+# Break in Subprogram stop at /home/marco/.local/lib/python3.9/site-packages/vunit/vhdl/core/src/stop_body_2008p.vhd line 13
+# Stopped at /home/marco/.local/lib/python3.9/site-packages/vunit/vhdl/core/src/stop_body_2008p.vhd line 13

@@ -1,0 +1,78 @@
+# vsim -modelsimini /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/vunit_out/modelsim/modelsim.ini -wlf /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/vunit_out/test_output/lib.uart_rx_controller_tb.test_receive_multiple_bytes_436f8e9fc50bc5237c2d91f4880067c20372ace5/modelsim/vsim.wlf -quiet -t ps -onfinish stop lib.uart_rx_controller_tb(rtl) -L vunit_lib -L lib -g/uart_rx_controller_tb/runner_cfg="active python runner : true,enabled_test_cases : test_receive_multiple_bytes,output path : /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/vunit_out/test_output/lib.uart_rx_controller_tb.test_receive_multiple_bytes_436f8e9fc50bc5237c2d91f4880067c20372ace5/,tb path : /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/,use_color : true" -g/uart_rx_controller_tb/tb_path=/home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/ 
+# Start time: 19:32:50 on Nov 04,2021
+# ** Warning: Design size of 21783 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
+# Expect performance to be adversely affected.
+#         15000 ps - default              -    INFO - Transmitting byte 00001001
+#      82495000 ps - default              -    INFO - Correct Byte (00001001) received
+#      82495000 ps - default              -    INFO - ---------------------------------------------
+#      82515000 ps - default              -    INFO - Transmitting byte 00001010
+#     164995000 ps - default              -    INFO - Correct Byte (00001010) received
+#     164995000 ps - default              -    INFO - ---------------------------------------------
+#     165015000 ps - default              -    INFO - Transmitting byte 00000010
+#     247495000 ps - default              -    INFO - Correct Byte (00000010) received
+#     247495000 ps - default              -    INFO - ---------------------------------------------
+#     247515000 ps - default              -    INFO - Transmitting byte 00001010
+#     329995000 ps - default              -    INFO - Correct Byte (00001010) received
+#     329995000 ps - default              -    INFO - ---------------------------------------------
+#     330015000 ps - default              -    INFO - Transmitting byte 00001011
+#     412495000 ps - default              -    INFO - Correct Byte (00001011) received
+#     412495000 ps - default              -    INFO - ---------------------------------------------
+#     412515000 ps - default              -    INFO - Transmitting byte 00000011
+#     494995000 ps - default              -    INFO - Correct Byte (00000011) received
+#     494995000 ps - default              -    INFO - ---------------------------------------------
+#     495015000 ps - default              -    INFO - Transmitting byte 00001010
+#     577495000 ps - default              -    INFO - Correct Byte (00001010) received
+#     577495000 ps - default              -    INFO - ---------------------------------------------
+#     577515000 ps - default              -    INFO - Transmitting byte 00001100
+#     659995000 ps - default              -    INFO - Correct Byte (00001100) received
+#     659995000 ps - default              -    INFO - ---------------------------------------------
+#     660015000 ps - default              -    INFO - Transmitting byte 00000011
+#     742495000 ps - default              -    INFO - Correct Byte (00000011) received
+#     742495000 ps - default              -    INFO - ---------------------------------------------
+#     742515000 ps - default              -    INFO - Transmitting byte 00001011
+#     824995000 ps - default              -    INFO - Correct Byte (00001011) received
+#     824995000 ps - default              -    INFO - ---------------------------------------------
+#     825015000 ps - default              -    INFO - Transmitting byte 00001100
+#     907495000 ps - default              -    INFO - Correct Byte (00001100) received
+#     907495000 ps - default              -    INFO - ---------------------------------------------
+#     907515000 ps - default              -    INFO - Transmitting byte 00000011
+#     989995000 ps - default              -    INFO - Correct Byte (00000011) received
+#     989995000 ps - default              -    INFO - ---------------------------------------------
+#     990015000 ps - default              -    INFO - Transmitting byte 00001001
+#    1072495000 ps - default              -    INFO - Correct Byte (00001001) received
+#    1072495000 ps - default              -    INFO - ---------------------------------------------
+#    1072515000 ps - default              -    INFO - Transmitting byte 00001011
+#    1154995000 ps - default              -    INFO - Correct Byte (00001011) received
+#    1154995000 ps - default              -    INFO - ---------------------------------------------
+#    1155015000 ps - default              -    INFO - Transmitting byte 00000010
+#    1237495000 ps - default              -    INFO - Correct Byte (00000010) received
+#    1237495000 ps - default              -    INFO - ---------------------------------------------
+#    1237515000 ps - default              -    INFO - Transmitting byte 00000110
+#    1319995000 ps - default              -    INFO - Correct Byte (00000110) received
+#    1319995000 ps - default              -    INFO - ---------------------------------------------
+#    1320015000 ps - default              -    INFO - Transmitting byte 00001000
+#    1402495000 ps - default              -    INFO - Correct Byte (00001000) received
+#    1402495000 ps - default              -    INFO - ---------------------------------------------
+#    1402515000 ps - default              -    INFO - Transmitting byte 00000000
+#    1484995000 ps - default              -    INFO - Correct Byte (00000000) received
+#    1484995000 ps - default              -    INFO - ---------------------------------------------
+#    1485015000 ps - default              -    INFO - Transmitting byte 00000101
+#    1567495000 ps - default              -    INFO - Correct Byte (00000101) received
+#    1567495000 ps - default              -    INFO - ---------------------------------------------
+#    1567515000 ps - default              -    INFO - Transmitting byte 00000111
+#    1649995000 ps - default              -    INFO - Correct Byte (00000111) received
+#    1649995000 ps - default              -    INFO - ---------------------------------------------
+#    1650015000 ps - default              -    INFO - Transmitting byte 00000000
+#    1732495000 ps - default              -    INFO - Correct Byte (00000000) received
+#    1732495000 ps - default              -    INFO - ---------------------------------------------
+#    1732515000 ps - default              -    INFO - Transmitting byte 00000110
+#    1814995000 ps - default              -    INFO - Correct Byte (00000110) received
+#    1814995000 ps - default              -    INFO - ---------------------------------------------
+#    1815015000 ps - default              -    INFO - Transmitting byte 00001000
+#    1897495000 ps - default              -    INFO - Correct Byte (00001000) received
+#    1897495000 ps - default              -    INFO - ---------------------------------------------
+#    1897515000 ps - default              -    INFO - Transmitting byte 00000000
+#    1979995000 ps - default              -    INFO - Correct Byte (00000000) received
+#    1979995000 ps - default              -    INFO - ---------------------------------------------
+# Break in Subprogram stop at /home/marco/.local/lib/python3.9/site-packages/vunit/vhdl/core/src/stop_body_2008p.vhd line 13
+# Stopped at /home/marco/.local/lib/python3.9/site-packages/vunit/vhdl/core/src/stop_body_2008p.vhd line 13

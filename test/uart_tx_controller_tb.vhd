@@ -24,20 +24,23 @@ ARCHITECTURE rtl OF uart_tx_controller_tb IS
 
     CONSTANT c_1s_in_ns : NATURAL := 1_000_000_000;
     CONSTANT c_clk_rate : NATURAL := 100_000_000; --clk speed for the testbench (in Hz)
-    CONSTANT c_baud_rate : NATURAL := 9600; --baud rate constant for UART entity-generics
+    CONSTANT c_baud_rate : NATURAL := 115200; --baud rate constant for UART entity-generics
     CONSTANT c_clk_period : TIME := (c_1s_in_ns/c_clk_rate) * 1 ns; --clock period is calculated from requested clk rate
-    CONSTANT c_bit_period : TIME := ((c_clk_rate/c_baud_rate) * (c_1s_in_ns/c_clk_rate)) * 1 ns;--constant used for waiting the right amount of time while checking the serial line when receiving data
+    CONSTANT c_bit_period : TIME := ((c_clk_rate/c_baud_rate) * (c_1s_in_ns/c_clk_rate)) * 1 ns;--constant used for waiting the right amount of time between bits
     CONSTANT test_byte : STD_LOGIC_VECTOR(7 DOWNTO 0) := X"34";--Constant for single byte transmission test
 
-    SIGNAL received_byte, byte_transmitted : STD_LOGIC_VECTOR(7 DOWNTO 0) := (OTHERS => '0');--Signals to compare the transmitted byte with the received byte
-
-    --uart_rx_dut signals
-    SIGNAL rx_serial_i, rx_active_o, rx_done_o : STD_LOGIC := '0';
-    SIGNAL rx_byte_o : STD_LOGIC_VECTOR(7 DOWNTO 0);
+    SIGNAL byte_transmitted : STD_LOGIC_VECTOR(7 DOWNTO 0) := (OTHERS => '0');--Signals to compare the transmitted byte with the received byte
 
     --uart_tx_dut signals
     SIGNAL clk, tx_start_i, tx_active_o, tx_serial_o, tx_done_o : STD_LOGIC := '0';
     SIGNAL tx_byte_i : STD_LOGIC_VECTOR(7 DOWNTO 0) := (OTHERS => '0');
+
+    PROCEDURE start_uart_transmission (
+        SIGNAL tx_start : OUT STD_LOGIC
+    ) IS
+    BEGIN
+        tx_start <= '1';
+    END PROCEDURE;
 
     --Procedure to check correct Uart Transmission on serial line
     PROCEDURE check_uart_transmission (
@@ -55,6 +58,7 @@ ARCHITECTURE rtl OF uart_tx_controller_tb IS
             msg => "Expected tx_serial_o to be " & to_string(test_byte(ii)) & " at Position " & INTEGER'IMAGE(ii));
             WAIT FOR c_bit_period; --Wait until the next bit has been stable for half the time on serial line
         END LOOP;
+        info("Transmitted byte matched expected byte");
     END check_uart_transmission;
 BEGIN
 
@@ -75,22 +79,6 @@ BEGIN
             tx_done => tx_done_o
         );
 
-    uart_rx_dut : ENTITY work.uart_rx_controller
-        GENERIC MAP(
-            clk_rate => c_clk_rate,
-            baud_rate => c_baud_rate
-        )
-        PORT MAP(
-            clk => clk,
-            rx_serial => rx_serial_i,
-            rx_byte => rx_byte_o,
-            rx_active => rx_active_o,
-            rx_done => rx_done_o
-        );
-
-    --Connect serial port of transmitter with the receiving entity
-    rx_serial_i <= tx_serial_o;
-
     main : PROCESS
     BEGIN
         test_runner_setup(runner, runner_cfg);
@@ -101,7 +89,6 @@ BEGIN
                 check(expr => tx_active_o = '0', msg => "Expected tx_active_o to be '0' on init");
                 check(expr => tx_serial_o = '1', msg => "Expected tx_serial_o to be '1' on init");
                 check(expr => tx_done_o = '0', msg => "Expected tx_done_o to be '0' on init");
-                show(get_logger("system0"), display_handler, info);
                 info("Loaded CSV of Size " & to_string(height(c_csv_loaded)) & "x" & to_string(width(c_csv_loaded)));
 
             ELSIF run("test_transmit_single_byte") THEN
@@ -114,21 +101,9 @@ BEGIN
                 tx_byte_i <= test_byte;
                 WAIT UNTIL rising_edge(clk); --Nach der zweiten Taktflanke sind Daten gelatched und serial wird auf '0' gezogen
                 check(expr => tx_active_o = '1', msg => "Expected tx_active_o to be '1'");
-                tx_start_i <= '1'; 
-                tx_byte_i <= (others => '0');
-                check_uart_transmission(tx_serial_o,test_byte);
-                -- WAIT FOR c_bit_period/2;
-                -- check(expr => tx_serial_o = '0', msg => "Expected tx_serial_o to be '0' to signal start of transmission");
-                
-                
-                -- WAIT FOR c_bit_period;
-
-                -- FOR ii IN 0 TO 7 LOOP
-                --     check(
-                --     expr => tx_serial_o = test_byte(ii),
-                --     msg => "Expected tx_serial_o to be " & INTEGER'IMAGE(to_integer(unsigned(test_byte(ii DOWNTO ii)))) & " at Position " & INTEGER'IMAGE(ii));
-                --     WAIT FOR c_bit_period;
-                -- END LOOP;
+                tx_start_i <= '1';
+                tx_byte_i <= (OTHERS => '0');
+                check_uart_transmission(tx_serial_o, test_byte);
 
                 --check(expr => tx_serial_o = '1', msg => "Expected tx_serial_o to be '1' (Stop Bit Check)");
                 WAIT UNTIL tx_done_o = '1';

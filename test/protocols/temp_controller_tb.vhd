@@ -14,7 +14,7 @@ ARCHITECTURE rtl OF temp_controller_tb IS
     SIGNAL clk : STD_LOGIC := '0';
     SIGNAL reset_n : STD_LOGIC := '0';
     SIGNAL i2c_sda, i2c_scl : STD_LOGIC;
-
+    SIGNAL scl_cnt : INTEGER RANGE 0 TO 200 := 0;
     SIGNAL i2c_ena_i, i2c_rw_i, i2c_busy_o, i2c_ackerror_o, busy_prev, done : STD_LOGIC := '0';
     SIGNAL i2c_addr_i : STD_LOGIC_VECTOR(6 DOWNTO 0);
     SIGNAL i2c_data_i, i2c_data_o : STD_LOGIC_VECTOR(7 DOWNTO 0);
@@ -22,6 +22,16 @@ ARCHITECTURE rtl OF temp_controller_tb IS
 BEGIN
 
     clk <= NOT clk AFTER 5 ns;
+
+    PROCESS (i2c_scl)
+    BEGIN
+        IF rising_edge(i2c_scl) THEN
+            scl_cnt <= scl_cnt + 1;
+            IF (scl_cnt = 10) THEN
+                scl_cnt <= 0;
+            END IF;
+        END IF;
+    END PROCESS;
 
     PROCESS (clk)
     BEGIN
@@ -65,17 +75,14 @@ BEGIN
                 WAIT UNTIL rising_edge(clk);
                 WAIT UNTIL rising_edge(clk);
                 i2c_ena_i <= '1';
-                i2c_addr_i <= "1010010";
+                i2c_addr_i <= "1001001";
                 i2c_data_i <= "11010010";
-                WAIT UNTIL rising_edge(clk);
-                --i2c_addr_i <= (others => '0');
-                --i2c_data_i <= (others => '0');
-                WAIT UNTIL done = '1';
+                WAIT UNTIL scl_cnt = 9;
                 i2c_sda <= '0';
-                WAIT UNTIL rising_edge(clk);
+                WAIT UNTIL scl_cnt = 10;
                 WAIT UNTIL rising_edge(clk);
                 i2c_sda <= 'H';
-                WAIT FOR 100 ns;
+                WAIT FOR 1 ms;
             END IF;
         END LOOP;
         test_runner_cleanup(runner);

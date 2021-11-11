@@ -10,7 +10,10 @@ ENTITY uart_to_vram IS
         test : IN STD_LOGIC;
         i_rx_serial : IN STD_LOGIC;
         o_rx_serial : OUT STD_LOGIC;
-        out_byte : OUT unsigned(7 DOWNTO 0)
+        out_byte : OUT unsigned(7 DOWNTO 0);
+        data_vga : OUT STD_LOGIC_VECTOR(11 DOWNTO 0);
+        frame_tick : IN STD_LOGIC;
+        pxl_clk : in std_logic
     );
 END uart_to_vram;
 
@@ -58,7 +61,10 @@ BEGIN
             ram_address => bram_address,
             ram_data_in => bram_data_in,
             ram_data_out => bram_data_out,
-            debug => out_byte
+            debug => out_byte,
+            data_vga => data_vga,
+            frame_tick => frame_tick,
+            pxl_clk => pxl_clk
         );
 
     --Block RAM IP expects Vector of length 1 as Enable
@@ -76,7 +82,7 @@ BEGIN
     );
 
     --UART Entity
-    --TODO eigene UART Implementierung benutzen. Funktioniert natürlich noch nicht :/
+    --TODO eigene UART Implementierung benutzen. Funktioniert natürlich noch nicht :/ (laut Sim aber schon)
     uart : ENTITY work.uart(logic)
         GENERIC MAP(
             clk_freq => 100_000_000,

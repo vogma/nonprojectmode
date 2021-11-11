@@ -24,6 +24,7 @@ SRC_PATH = Path(__file__).parent / "src"
 
 lib = VU.add_library("lib")
 lib.add_source_files("uart_tx_controller_tb.vhd")
+lib.add_source_file("uart_rx_controller_tb.vhd")
 lib.add_source_files("../src/uart/*.vhd")
 #VU.add_library("tb_uart_lib").add_source_files(SRC_PATH / "test" / "*.vhd")
 

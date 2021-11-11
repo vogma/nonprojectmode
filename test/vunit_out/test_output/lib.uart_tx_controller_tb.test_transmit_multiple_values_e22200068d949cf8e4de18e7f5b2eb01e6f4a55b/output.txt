@@ -1,0 +1,54 @@
+# vsim -modelsimini /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/vunit_out/modelsim/modelsim.ini -wlf /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/vunit_out/test_output/lib.uart_tx_controller_tb.test_transmit_multiple_values_e22200068d949cf8e4de18e7f5b2eb01e6f4a55b/modelsim/vsim.wlf -quiet -t ps -onfinish stop lib.uart_tx_controller_tb(rtl) -L vunit_lib -L lib -g/uart_tx_controller_tb/runner_cfg="active python runner : true,enabled_test_cases : test_transmit_multiple_values,output path : /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/vunit_out/test_output/lib.uart_tx_controller_tb.test_transmit_multiple_values_e22200068d949cf8e4de18e7f5b2eb01e6f4a55b/,tb path : /home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/,use_color : true" -g/uart_tx_controller_tb/tb_path=/home/marco/entwicklung/projekte/ArtyA7-Projects/nonprojectmode/test/ 
+# Start time: 19:32:50 on Nov 04,2021
+# ** Warning: Design size of 21830 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
+# Expect performance to be adversely affected.
+#          5000 ps - default              -    INFO - Sending UART Byte: 00001001
+#      82475000 ps - default              -    INFO - Transmitted byte matched expected byte
+#      86825000 ps - default              -    INFO - Sending UART Byte: 00001010
+#     169295000 ps - default              -    INFO - Transmitted byte matched expected byte
+#     173645000 ps - default              -    INFO - Sending UART Byte: 00000010
+#     256115000 ps - default              -    INFO - Transmitted byte matched expected byte
+#     260465000 ps - default              -    INFO - Sending UART Byte: 00001010
+#     342935000 ps - default              -    INFO - Transmitted byte matched expected byte
+#     347285000 ps - default              -    INFO - Sending UART Byte: 00001011
+#     429755000 ps - default              -    INFO - Transmitted byte matched expected byte
+#     434105000 ps - default              -    INFO - Sending UART Byte: 00000011
+#     516575000 ps - default              -    INFO - Transmitted byte matched expected byte
+#     520925000 ps - default              -    INFO - Sending UART Byte: 00001010
+#     603395000 ps - default              -    INFO - Transmitted byte matched expected byte
+#     607745000 ps - default              -    INFO - Sending UART Byte: 00001100
+#     690215000 ps - default              -    INFO - Transmitted byte matched expected byte
+#     694565000 ps - default              -    INFO - Sending UART Byte: 00000011
+#     777035000 ps - default              -    INFO - Transmitted byte matched expected byte
+#     781385000 ps - default              -    INFO - Sending UART Byte: 00001011
+#     863855000 ps - default              -    INFO - Transmitted byte matched expected byte
+#     868205000 ps - default              -    INFO - Sending UART Byte: 00001100
+#     950675000 ps - default              -    INFO - Transmitted byte matched expected byte
+#     955025000 ps - default              -    INFO - Sending UART Byte: 00000011
+#    1037495000 ps - default              -    INFO - Transmitted byte matched expected byte
+#    1041845000 ps - default              -    INFO - Sending UART Byte: 00001001
+#    1124315000 ps - default              -    INFO - Transmitted byte matched expected byte
+#    1128665000 ps - default              -    INFO - Sending UART Byte: 00001011
+#    1211135000 ps - default              -    INFO - Transmitted byte matched expected byte
+#    1215485000 ps - default              -    INFO - Sending UART Byte: 00000010
+#    1297955000 ps - default              -    INFO - Transmitted byte matched expected byte
+#    1302305000 ps - default              -    INFO - Sending UART Byte: 00000110
+#    1384775000 ps - default              -    INFO - Transmitted byte matched expected byte
+#    1389125000 ps - default              -    INFO - Sending UART Byte: 00001000
+#    1471595000 ps - default              -    INFO - Transmitted byte matched expected byte
+#    1475945000 ps - default              -    INFO - Sending UART Byte: 00000000
+#    1558415000 ps - default              -    INFO - Transmitted byte matched expected byte
+#    1562765000 ps - default              -    INFO - Sending UART Byte: 00000101
+#    1645235000 ps - default              -    INFO - Transmitted byte matched expected byte
+#    1649585000 ps - default              -    INFO - Sending UART Byte: 00000111
+#    1732055000 ps - default              -    INFO - Transmitted byte matched expected byte
+#    1736405000 ps - default              -    INFO - Sending UART Byte: 00000000
+#    1818875000 ps - default              -    INFO - Transmitted byte matched expected byte
+#    1823225000 ps - default              -    INFO - Sending UART Byte: 00000110
+#    1905695000 ps - default              -    INFO - Transmitted byte matched expected byte
+#    1910045000 ps - default              -    INFO - Sending UART Byte: 00001000
+#    1992515000 ps - default              -    INFO - Transmitted byte matched expected byte
+#    1996865000 ps - default              -    INFO - Sending UART Byte: 00000000
+#    2079335000 ps - default              -    INFO - Transmitted byte matched expected byte
+# Break in Subprogram stop at /home/marco/.local/lib/python3.9/site-packages/vunit/vhdl/core/src/stop_body_2008p.vhd line 13
+# Stopped at /home/marco/.local/lib/python3.9/site-packages/vunit/vhdl/core/src/stop_body_2008p.vhd line 13
